@@ -28,8 +28,6 @@ export default function HomePage() {
     loading: false,
   });
 
-  const [showScroll, setShowScroll] = useState(false);
-
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
@@ -47,20 +45,10 @@ export default function HomePage() {
     fetchParticipants();
   }, []);
 
-  useEffect(() => {
-    if (data.participantes.length < 100) {
-      setShowScroll(false);
-      return;
-    }
-    const handleScroll = () => {
-      setShowScroll(window.scrollY > 300);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [data.participantes.length]);
-
   const openModal = async (participante) => {
     setModalInfo({ visible: true, participante, evento: null, loading: true });
+
+    toast.success(`Participante ${participante.name} selecionado com sucesso!`);
 
     try {
       const { data } = await axios.get(
@@ -100,7 +88,7 @@ export default function HomePage() {
             setData((d) => ({ ...d, current: page, pageSize: size }))
           }
           showSizeChanger
-          pageSizeOptions={["5", "10", "100"]}
+          pageSizeOptions={["5", "10", "50"]}
         />
       </div>
 
@@ -121,7 +109,7 @@ export default function HomePage() {
         />
       )}
 
-      <ScrollToTopButton visible={showScroll} onClick={scrollToTop} />
+      <ScrollToTopButton onClick={scrollToTop} />
 
       <EventModal
         modalInfo={modalInfo}

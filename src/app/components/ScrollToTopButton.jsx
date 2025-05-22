@@ -1,6 +1,20 @@
+import { useEffect, useState } from "react";
 import styles from "../styles/ScrollToTopButton.module.css";
 
-export default function ScrollToTopButton({ visible, onClick }) {
+export default function ScrollToTopButton({ onClick }) {
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const isScrollable = document.documentElement.scrollHeight > window.innerHeight;
+            const scrollThreshold = 300;
+            setVisible(isScrollable && window.scrollY > scrollThreshold);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     if (!visible) return null;
 
     return (
