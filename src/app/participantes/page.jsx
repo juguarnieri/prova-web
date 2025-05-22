@@ -108,9 +108,7 @@ export default function HomePage() {
           onCardClick={openModal}
         />
       )}
-
       <ScrollToTopButton onClick={scrollToTop} />
-
       <EventModal
         modalInfo={modalInfo}
         onClose={() =>
